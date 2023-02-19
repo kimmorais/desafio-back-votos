@@ -17,7 +17,7 @@ public class CadastrarAssociadoPortAdapter implements CadastrarAssociadoPort {
 
     @Override
     public Associado cadastrarAssociado(CadastrarAssociadoUseCaseInput associado) {
-        var associadoTable = associadoTableMapper.converterAssociadoInputParaAssociadoTable(associado);
-        return associadoTableMapper.converterAssociadoTableParaAssociado(associadoRepository.save(associadoTable));
+        var associadoTable = this.associadoTableMapper.converterAssociadoInputParaAssociadoTable(associado);
+        return this.associadoTableMapper.converterAssociadoTableParaAssociado(this.associadoRepository.save(associadoTable));
     }
 }
