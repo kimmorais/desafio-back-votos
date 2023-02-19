@@ -5,5 +5,5 @@ import org.back_votos_core.use_cases.cadastrar_pauta.input.CadastrarPautaUseCase
 
 public interface CadastrarPautaPort {
 
-    Pauta cadastrarPauta(CadastrarPautaUseCaseInput nome);
+    Pauta cadastrarPauta(CadastrarPautaUseCaseInput pauta);
 }

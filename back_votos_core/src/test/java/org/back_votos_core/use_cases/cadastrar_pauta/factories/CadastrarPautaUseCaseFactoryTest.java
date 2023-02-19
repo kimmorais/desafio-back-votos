@@ -24,10 +24,10 @@ class CadastrarPautaUseCaseFactoryTest {
     @DisplayName("Ao chamar o método, deve retornar uma nova instância de CadastrarPautaUseCaseImpl")
     void makeInstance_chamadaValida_retornarInstanciaCadastrarPautaUseCaseImpl() {
 
-        var retornoEsperado = new CadastrarPautaUseCaseImpl(cadastrarPautaPort);
+        var retornoEsperado = new CadastrarPautaUseCaseImpl(this.cadastrarPautaPort);
 
         var retorno = this.factory.makeInstance();
 
-        assertThat(retornoEsperado).usingRecursiveComparison().isEqualTo(retorno);
+        assertThat(retorno).usingRecursiveComparison().isEqualTo(retornoEsperado);
     }
 }
