@@ -17,7 +17,7 @@ public class CadastrarPautaPortAdapter implements CadastrarPautaPort {
 
     @Override
     public Pauta cadastrarPauta(CadastrarPautaUseCaseInput pauta) {
-        var pautaTable = pautaTableMapper.converterPautaInputParaPautaTable(pauta);
-        return pautaTableMapper.converterPautaTableParaPauta(pautaRepository.save(pautaTable));
+        var pautaTable = this.pautaTableMapper.converterPautaInputParaPautaTable(pauta);
+        return this.pautaTableMapper.converterPautaTableParaPauta(this.pautaRepository.save(pautaTable));
     }
 }

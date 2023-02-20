@@ -86,7 +86,7 @@ class VotarPortAdapterTest {
         when(this.assembleiaRepository.findById(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaValida));
         when(this.votoTableMapper.converterVotoInputParaVotoTable(votoInput)).thenReturn(votoTable);
         when(this.votoRepository.save(votoTable)).thenReturn(votoTableComId);
-        when(this.assembleiaRepository.save(any())).thenReturn(assembleiaAtualizada);
+        when(this.assembleiaRepository.save(any(AssembleiaTable.class))).thenReturn(assembleiaAtualizada);
         when(this.votoTableMapper.converterVotoTableParaVoto(votoTableComId)).thenReturn(votoEsperado);
 
         var retorno = this.adapter.votar(votoInput);

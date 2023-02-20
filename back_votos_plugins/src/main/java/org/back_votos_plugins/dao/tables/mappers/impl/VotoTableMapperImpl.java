@@ -16,7 +16,7 @@ public class VotoTableMapperImpl implements VotoTableMapper {
 
     @Override
     public Voto converterVotoTableParaVoto(VotoTable votoTable) {
-        var voto = entityFactories.votoFactory().makeNewInstance();
+        var voto = this.entityFactories.votoFactory().makeNewInstance();
         voto.setIdVoto(votoTable.getId());
         voto.setIdAssociado(votoTable.getIdAssociado());
         voto.setVotoEnum(votoTable.getVotoEnum());

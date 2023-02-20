@@ -16,6 +16,7 @@ public class AssembleiaTable {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue
     private UUID id;
 
     @OneToOne
