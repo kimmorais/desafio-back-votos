@@ -1,11 +1,11 @@
 package org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 public class AssembleiaFinalizadaException extends RuntimeException {
-    public AssembleiaFinalizadaException(OffsetDateTime fimAssembleia, OffsetDateTime horarioVoto) {
+    public AssembleiaFinalizadaException(LocalDateTime fimAssembleia, LocalDateTime horarioVoto) {
         super("Não foi possível votar nesta assembleia pois ela já foi encerrada." +
-                "\nHorario final da assembleia: " + fimAssembleia + "." +
-                "\nHorario do voto: " + horarioVoto + ".");
+                "\nHorário final da assembleia: " + fimAssembleia + "." +
+                "\nHorário do voto: " + horarioVoto + ".");
     }
 }

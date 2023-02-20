@@ -6,7 +6,9 @@ import org.back_votos_core.use_cases.votar.input.VotarUseCaseInput;
 import org.back_votos_plugins.dao.tables.VotoTable;
 import org.back_votos_plugins.dao.tables.mappers.VotoTableMapper;
 import org.back_votos_plugins.entity_factories.EntityFactories;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class VotoTableMapperImpl implements VotoTableMapper {
 

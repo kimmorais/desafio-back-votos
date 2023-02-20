@@ -15,7 +15,7 @@ import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exc
 import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssociadoNaoPodeVotarException;
 import org.springframework.stereotype.Component;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.IntConsumer;
@@ -43,7 +43,7 @@ public class VotarPortAdapter implements VotarPort {
         return this.assembleiaRepository.findById(idAssembleia).orElseThrow(() -> new AssembleiaNaoEncontradaException(idAssembleia));
     }
 
-    private void verificarSeEPossivelVotar(OffsetDateTime fimAssembleia, OffsetDateTime horarioVoto, List<VotoTable> votos, UUID idAssociado) {
+    private void verificarSeEPossivelVotar(LocalDateTime fimAssembleia, LocalDateTime horarioVoto, List<VotoTable> votos, UUID idAssociado) {
         if (horarioVoto.isAfter(fimAssembleia)) {
             throw new AssembleiaFinalizadaException(fimAssembleia, horarioVoto);
         }
