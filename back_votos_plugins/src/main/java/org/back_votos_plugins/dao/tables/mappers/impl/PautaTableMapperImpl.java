@@ -16,7 +16,7 @@ public class PautaTableMapperImpl implements PautaTableMapper {
 
     @Override
     public Pauta converterPautaTableParaPauta(PautaTable pautaTable) {
-        var pautaImpl = entityFactories.pautaFactory().makeNewInstance();
+        var pautaImpl = this.entityFactories.pautaFactory().makeNewInstance();
         pautaImpl.setIdPauta(pautaTable.getId());
         pautaImpl.setNome(pautaTable.getNome());
         return pautaImpl;

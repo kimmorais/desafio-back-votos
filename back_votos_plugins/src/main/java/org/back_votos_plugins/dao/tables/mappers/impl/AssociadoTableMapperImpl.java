@@ -16,7 +16,7 @@ public class AssociadoTableMapperImpl implements AssociadoTableMapper {
 
     @Override
     public Associado converterAssociadoTableParaAssociado(AssociadoTable associadoTable) {
-        var associado = entityFactories.associadoFactory().makeNewInstance();
+        var associado = this.entityFactories.associadoFactory().makeNewInstance();
         associado.setIdAssociado(associadoTable.getId());
         associado.setCpf(associadoTable.getCpf());
         return associado;
