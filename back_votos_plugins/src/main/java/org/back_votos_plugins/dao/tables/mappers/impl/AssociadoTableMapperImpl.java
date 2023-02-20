@@ -5,7 +5,7 @@ import org.back_votos_core.entities.Associado;
 import org.back_votos_core.use_cases.cadastrar_associado.input.CadastrarAssociadoUseCaseInput;
 import org.back_votos_plugins.dao.tables.AssociadoTable;
 import org.back_votos_plugins.dao.tables.mappers.AssociadoTableMapper;
-import org.back_votos_plugins.entity_factories.EntityFactories;
+import org.back_votos_plugins.factories.EntityFactories;
 import org.springframework.stereotype.Component;
 
 @Component

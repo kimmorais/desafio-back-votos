@@ -5,7 +5,7 @@ import org.back_votos_core.entities.Pauta;
 import org.back_votos_core.use_cases.cadastrar_pauta.input.CadastrarPautaUseCaseInput;
 import org.back_votos_plugins.dao.tables.PautaTable;
 import org.back_votos_plugins.dao.tables.mappers.PautaTableMapper;
-import org.back_votos_plugins.entity_factories.EntityFactories;
+import org.back_votos_plugins.factories.EntityFactories;
 import org.springframework.stereotype.Component;
 
 @Component

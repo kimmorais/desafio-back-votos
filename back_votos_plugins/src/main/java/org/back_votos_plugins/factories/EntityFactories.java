@@ -1,4 +1,4 @@
-package org.back_votos_plugins.entity_factories;
+package org.back_votos_plugins.factories;
 
 import org.back_votos_core.entities.factories.*;
 import org.springframework.context.annotation.Bean;

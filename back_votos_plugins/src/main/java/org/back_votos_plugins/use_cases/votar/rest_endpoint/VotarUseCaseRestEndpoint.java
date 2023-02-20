@@ -19,11 +19,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VotarUseCaseRestEndpoint {
 
+    private final Clock clock;
     private final VotarUseCase votarUseCase;
 
     @PutMapping("/assembleia/{idAssembleia}/voto")
     public ResponseEntity<Voto> votar(@PathVariable String idAssembleia, @RequestBody VotoRequestModel votoRequest) {
-        var horarioVoto = LocalDateTime.now();
+        var horarioVoto = LocalDateTime.now(this.clock);
         var votoInput = new VotarUseCaseInput(UUID.fromString(idAssembleia), votoRequest.getIdAssociado(), votoRequest.getVoto(), horarioVoto);
 
         return ResponseEntity.ok(this.votarUseCase.execute(votoInput));
