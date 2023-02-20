@@ -11,6 +11,6 @@ public class CadastrarPautaUseCaseFactory {
     private final CadastrarPautaPort cadastrarPautaPort;
 
     public CadastrarPautaUseCase makeInstance() {
-        return new CadastrarPautaUseCaseImpl(cadastrarPautaPort);
+        return new CadastrarPautaUseCaseImpl(this.cadastrarPautaPort);
     }
 }
