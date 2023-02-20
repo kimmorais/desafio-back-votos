@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public class AssembleiaTable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @Column(name = "votos")
-    private List<VotoTable> votos;
+    private List<VotoTable> votos = new ArrayList<>();
 
     @Column(name = "fim_assembleia")
     private LocalDateTime fimAssembleia;

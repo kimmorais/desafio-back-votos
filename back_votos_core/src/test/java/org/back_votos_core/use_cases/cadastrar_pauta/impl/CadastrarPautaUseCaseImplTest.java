@@ -41,9 +41,7 @@ class CadastrarPautaUseCaseImplTest {
 
     private CadastrarPautaUseCaseInput criarPautaInput() {
 
-        var pauta = new CadastrarPautaUseCaseInput(NOME_PAUTA);
-
-        return pauta;
+        return new CadastrarPautaUseCaseInput(NOME_PAUTA);
     }
 
     private Pauta criarPautaEsperada() {

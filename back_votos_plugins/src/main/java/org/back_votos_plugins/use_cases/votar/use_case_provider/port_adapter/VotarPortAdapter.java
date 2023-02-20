@@ -48,7 +48,7 @@ public class VotarPortAdapter implements VotarPort {
             throw new AssembleiaFinalizadaException(fimAssembleia, horarioVoto);
         }
 
-        votos.stream().filter(votoTable -> votoTable.getIdAssociado().equals(idAssociado)).findFirst().ifPresent(voto -> {
+        votos.stream().filter(votoTable -> idAssociado.equals(votoTable.getIdAssociado())).findFirst().ifPresent(voto -> {
             throw new AssociadoNaoPodeVotarException(voto.toString());
         });
     }
