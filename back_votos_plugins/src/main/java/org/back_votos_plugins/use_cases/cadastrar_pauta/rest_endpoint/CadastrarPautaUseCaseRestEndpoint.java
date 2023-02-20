@@ -20,6 +20,6 @@ public class CadastrarPautaUseCaseRestEndpoint {
     public ResponseEntity<Pauta> cadastrarPauta(@RequestBody PautaRequestModel pautaRequest) {
         var pautaInput = new CadastrarPautaUseCaseInput(pautaRequest.getNome());
 
-        return ResponseEntity.ok(cadastrarPautaUseCase.execute(pautaInput));
+        return ResponseEntity.ok(this.cadastrarPautaUseCase.execute(pautaInput));
     }
 }
