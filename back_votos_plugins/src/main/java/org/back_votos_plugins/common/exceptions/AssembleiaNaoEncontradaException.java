@@ -1,4 +1,4 @@
-package org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions;
+package org.back_votos_plugins.common.exceptions;
 
 import java.util.UUID;
 

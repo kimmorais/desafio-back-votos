@@ -7,7 +7,7 @@ import org.back_votos_core.use_cases.votar.VotarUseCase;
 import org.back_votos_core.use_cases.votar.input.VotarUseCaseInput;
 import org.back_votos_plugins.use_cases.votar.rest_endpoint.request_model.VotoRequestModel;
 import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssembleiaFinalizadaException;
-import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssembleiaNaoEncontradaException;
+import org.back_votos_plugins.common.exceptions.AssembleiaNaoEncontradaException;
 import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssociadoNaoPodeVotarException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
