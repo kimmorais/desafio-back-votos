@@ -12,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@Table(name = "assembleia_table")
 public class AssembleiaTable {
 
     @Id
@@ -27,10 +28,10 @@ public class AssembleiaTable {
     private Boolean vencedora;
 
     @Column(name = "quantidade_votos_sim")
-    private Integer qtdVotosSim;
+    private Integer qtdVotosSim = 0;
 
     @Column(name = "quantidade_votos_nao")
-    private Integer qtdVotosNao;
+    private Integer qtdVotosNao = 0;
 
     @OneToMany(cascade = CascadeType.ALL)
     @Column(name = "votos")

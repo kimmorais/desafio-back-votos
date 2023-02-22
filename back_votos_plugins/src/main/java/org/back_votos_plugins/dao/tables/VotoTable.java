@@ -11,6 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@Table(name = "voto_table")
 public class VotoTable {
 
     @Id

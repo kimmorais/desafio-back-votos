@@ -10,7 +10,7 @@ import org.back_votos_plugins.dao.tables.AssembleiaTable;
 import org.back_votos_plugins.dao.tables.VotoTable;
 import org.back_votos_plugins.dao.tables.mappers.VotoTableMapper;
 import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssembleiaFinalizadaException;
-import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssembleiaNaoEncontradaException;
+import org.back_votos_plugins.common.exceptions.AssembleiaNaoEncontradaException;
 import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssociadoNaoPodeVotarException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
