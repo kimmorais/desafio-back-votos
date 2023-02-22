@@ -8,6 +8,7 @@ import org.back_votos_core.use_cases.votar.input.VotarUseCaseInput;
 import org.back_votos_plugins.use_cases.votar.rest_endpoint.request_model.VotoRequestModel;
 import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssembleiaFinalizadaException;
 import org.back_votos_plugins.common.exceptions.AssembleiaNaoEncontradaException;
+import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssociadoNaoCadastradoException;
 import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssociadoNaoPodeVotarException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,6 +66,18 @@ class VotarUseCaseRestEndpointTest {
     }
 
     @Test
+    @DisplayName("Ao ser lançado AssembleiaNaoEncontradaException, deve executar o handler e retornar NOT_FOUND")
+    void handleException_associadoNaoCadastradoException_retornarNotFound() {
+
+        var exception = criarAssociadoNaoCadastradoException();
+        var retornoEsperado = new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+
+        var retorno = this.endpoint.handleException(exception);
+
+        assertEquals(retornoEsperado, retorno);
+    }
+
+    @Test
     @DisplayName("Ao ser lançada AssembleiaNaoEncontradaException, deve executar o handler e retornar NOT_FOUND")
     void handleException_assembleiaNaoEncontradaException_retornarNotFound() {
 
@@ -98,6 +111,10 @@ class VotarUseCaseRestEndpointTest {
         var retorno = this.endpoint.handleException(exception);
 
         assertEquals(retornoEsperado, retorno);
+    }
+
+    private AssociadoNaoCadastradoException criarAssociadoNaoCadastradoException() {
+        return new AssociadoNaoCadastradoException(ID_ASSOCIADO);
     }
 
     private AssociadoNaoPodeVotarException criarAssociadoNaoPodeVotarException() {
