@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  db:
+    image: postgres
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: associado123
+      POSTGRES_PASSWORD: associado123
+      POSTGRES_DB: backvotos
+    ports:
+      - "5432:5432"

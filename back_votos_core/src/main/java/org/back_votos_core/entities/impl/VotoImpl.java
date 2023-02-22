@@ -8,6 +8,11 @@ import java.util.UUID;
 public class VotoImpl extends Voto {
 
     @Override
+    public UUID getIdVoto() {
+        return this.idVoto;
+    }
+
+    @Override
     public void setIdVoto(UUID idVoto) {
         this.idVoto = idVoto;
     }
@@ -20,6 +25,11 @@ public class VotoImpl extends Voto {
     @Override
     public void setIdAssociado(UUID idAssociado) {
         this.idAssociado = idAssociado;
+    }
+
+    @Override
+    public VotoEnum getVotoEnum() {
+        return this.votoEnum;
     }
 
     @Override

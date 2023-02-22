@@ -12,11 +12,16 @@ public abstract class Assembleia {
     protected Integer qtdVotosNao;
     protected List<Voto> votos;
 
+    public abstract UUID getIdAssembleia();
     public abstract void setIdAssembleia(UUID idAssembleia);
     public abstract Pauta getPauta();
     public abstract void setPauta(Pauta pauta);
+    public abstract Boolean getVencedora();
     public abstract void setVencedora(Boolean vencedora);
+    public abstract Integer getQtdVotosSim();
     public abstract void setQtdVotosSim(Integer quantidade);
+    public abstract Integer getQtdVotosNao();
     public abstract void setQtdVotosNao(Integer quantidade);
+    public abstract List<Voto> getVotos();
     public abstract void setVotos(List<Voto> votos);
 }

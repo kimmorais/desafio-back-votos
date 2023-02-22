@@ -15,7 +15,7 @@ import java.util.UUID;
 public class VotoTable {
 
     @Id
-    @Column(name = "Ed")
+    @Column(name = "id")
     @GeneratedValue
     private UUID id;
 

@@ -9,5 +9,6 @@ public abstract class Associado {
 
     public abstract UUID getIdAssociado();
     public abstract void setIdAssociado(UUID id);
+    public abstract String getCpf();
     public abstract void setCpf(String cpf);
 }
