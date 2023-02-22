@@ -81,7 +81,7 @@ public class VotarPortAdapter implements VotarPort {
 
     private static void computarVoto(IntConsumer setter, Integer quantidadeVotos, VotoEnum votoEnum, VotoEnum novoVoto) {
         if (votoEnum.equals(novoVoto)) {
-            setter.accept(quantidadeVotos == null ? 1 : quantidadeVotos + 1);
+            setter.accept(quantidadeVotos + 1);
         }
     }
 }
