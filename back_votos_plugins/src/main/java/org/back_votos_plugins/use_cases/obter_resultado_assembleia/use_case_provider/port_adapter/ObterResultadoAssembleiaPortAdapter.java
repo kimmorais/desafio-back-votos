@@ -35,7 +35,7 @@ public class ObterResultadoAssembleiaPortAdapter implements ObterResultadoAssemb
     }
 
     private void verificarSeAssembleiaJaFoiFinalizada(LocalDateTime fimAssembleia, LocalDateTime momentoRequest) {
-        if (fimAssembleia.isBefore(momentoRequest)) {
+        if (momentoRequest.isBefore(fimAssembleia)) {
             throw new AssembleiaEmAndamentoException(fimAssembleia, momentoRequest);
         }
     }
