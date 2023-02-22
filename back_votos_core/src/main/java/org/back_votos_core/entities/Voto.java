@@ -10,10 +10,8 @@ public abstract class Voto {
     protected UUID idAssociado;
     protected VotoEnum votoEnum;
 
-    public abstract UUID getIdVoto();
     public abstract void setIdVoto(UUID idVoto);
     public abstract UUID getIdAssociado();
     public abstract void setIdAssociado(UUID associado);
-    public abstract VotoEnum getVotoEnum();
     public abstract void setVotoEnum(VotoEnum votoEnum);
 }

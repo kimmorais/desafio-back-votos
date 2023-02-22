@@ -33,8 +33,8 @@ class VotarUseCaseImplTest {
     VotarUseCaseImpl impl;
 
     @Test
-    @DisplayName("Ao chamar o método, deve retornar uma nova instância de CadastrarPautaUseCaseImpl")
-    void execute_chamadaValida_retornarInstanciaVotarUseCaseImpl() {
+    @DisplayName("Ao chamar o método, deve retornar Voto")
+    void execute_chamadaValida_retornarVoto() {
 
         var votoInput = criarVotoInput();
         var votoEsperado = criarVotoEsperado();

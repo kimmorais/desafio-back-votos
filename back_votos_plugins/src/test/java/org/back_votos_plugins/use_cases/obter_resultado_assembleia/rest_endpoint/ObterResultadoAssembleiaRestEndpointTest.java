@@ -74,7 +74,7 @@ class ObterResultadoAssembleiaRestEndpointTest {
 
     @Test
     @DisplayName("Ao tentar obter o resultado de uma assembleia que não existe, deve retornar NOT_FOUND")
-    void handleException_assembleiaNaoEncontrada_retornarAssembleiaNaoEncontradaException() {
+    void handleException_assembleiaNaoEncontrada_retornarNotFound() {
 
         var exception = criarAssembleiaNaoEncontradaException();
         var retornoEsperado = new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
@@ -86,7 +86,7 @@ class ObterResultadoAssembleiaRestEndpointTest {
 
     @Test
     @DisplayName("Ao tentar obter o resultado de uma assembleia que ainda está em andamento, deve retornar CONFLICT")
-    void testHandleException_assembleiaEmAndamento_retornarAssembleiaEmAndamentoException() {
+    void testHandleException_assembleiaEmAndamento_retornarConflict() {
 
         var exception = criarAssembleiaEmAndamentoException();
         var retornoEsperado = new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);

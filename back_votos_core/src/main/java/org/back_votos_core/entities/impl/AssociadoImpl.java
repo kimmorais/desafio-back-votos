@@ -20,9 +20,4 @@ public class AssociadoImpl extends Associado {
     public void setIdAssociado(UUID id) {
         this.idAssociado = id;
     }
-
-    @Override
-    public String getCpf() {
-        return this.cpf;
-    }
 }
