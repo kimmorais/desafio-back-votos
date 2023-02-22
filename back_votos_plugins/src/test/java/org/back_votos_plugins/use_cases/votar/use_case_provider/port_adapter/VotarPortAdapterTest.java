@@ -5,12 +5,15 @@ import org.back_votos_core.entities.constants.VotoEnum;
 import org.back_votos_core.entities.impl.VotoImpl;
 import org.back_votos_core.use_cases.votar.input.VotarUseCaseInput;
 import org.back_votos_plugins.dao.repositories.AssembleiaRepository;
+import org.back_votos_plugins.dao.repositories.AssociadoRepository;
 import org.back_votos_plugins.dao.repositories.VotoRepository;
 import org.back_votos_plugins.dao.tables.AssembleiaTable;
+import org.back_votos_plugins.dao.tables.AssociadoTable;
 import org.back_votos_plugins.dao.tables.VotoTable;
 import org.back_votos_plugins.dao.tables.mappers.VotoTableMapper;
 import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssembleiaFinalizadaException;
 import org.back_votos_plugins.common.exceptions.AssembleiaNaoEncontradaException;
+import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssociadoNaoCadastradoException;
 import org.back_votos_plugins.use_cases.votar.use_case_provider.port_adapter.exceptions.AssociadoNaoPodeVotarException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +44,7 @@ class VotarPortAdapterTest {
     static final UUID ID_ASSEMBLEIA_INVALIDO = UUID.fromString("cc180f85-d9aa-4970-9e9c-2deb3b08dfc1");
     static final UUID ID_VOTO = UUID.fromString("e9543ff7-4957-4bef-b644-a898ac154a96");
     static final UUID ID_ASSOCIADO = UUID.fromString("f3213a7f-95f1-473d-8ffc-7651154d5f41");
+    static final String CPF_ASSOCIADO = "83738209588";
     static final VotoEnum VOTO = VotoEnum.SIM;
     static final LocalDateTime HORARIO_VOTO = LocalDateTime.of(2023, 2, 19, 15, 0, 0, 0);
     static final LocalDateTime FIM_ASSEMBLEIA_FUTURO = LocalDateTime.of(2023, 2, 19, 20, 0, 0, 0);
@@ -51,6 +55,7 @@ class VotarPortAdapterTest {
     static final String ASSEMBLEIA_FINALIZADA_MESSAGE = "Não foi possível votar nesta assembleia pois ela já foi encerrada." +
             "\nHorário final da assembleia: " + FIM_ASSEMBLEIA_PASSADO + "." +
             "\nHorário do voto: " + HORARIO_VOTO + ".";
+    static final String ASSOCIADO_NAO_CADASTRADO_MESSAGE = "Não existe um Associado cadastrado com ID " + ID_ASSOCIADO;
 
     public static Stream<Arguments> criarEntradas() {
         return Stream.of(
@@ -64,6 +69,9 @@ class VotarPortAdapterTest {
 
     @Mock
     VotoRepository votoRepository;
+
+    @Mock
+    AssociadoRepository associadoRepository;
 
     @Mock
     AssembleiaRepository assembleiaRepository;
@@ -83,6 +91,7 @@ class VotarPortAdapterTest {
         var votoTableComId = criarVotoTable(ID_VOTO);
         var assembleiaAtualizada = criarAssembleiaAtualizada(assembleiaValida, votoInput);
 
+        when(this.associadoRepository.findById(ID_ASSOCIADO)).thenReturn(Optional.of(criarAssociado()));
         when(this.assembleiaRepository.findByIdWithPauta(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaValida));
         when(this.votoTableMapper.converterVotoInputParaVotoTable(votoInput)).thenReturn(votoTable);
         when(this.votoRepository.save(votoTable)).thenReturn(votoTableComId);
@@ -95,11 +104,25 @@ class VotarPortAdapterTest {
     }
 
     @Test
+    @DisplayName("Ao verificar se existe um Associado com o ID informado, deve lançar AssociadoNaoCadastradoException")
+    void votar_associadoNaoExiste_deveLancarAssociadoNaoCadastradoException() {
+
+        var votoInput = criarVotoInput();
+
+        when(this.associadoRepository.findById(ID_ASSOCIADO)).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(AssociadoNaoCadastradoException.class)
+                .isThrownBy(() -> this.adapter.votar(votoInput))
+                .withMessage(ASSOCIADO_NAO_CADASTRADO_MESSAGE);
+    }
+
+    @Test
     @DisplayName("Ao buscar pelo ID da assembleia informada, deve lançar AssembleiaNaoEncontradaException")
     void votar_assembleiaNaoEncontrada_lancarAssembleiaNaoEncontradaException() {
 
-        var votoInput = new VotarUseCaseInput(ID_ASSEMBLEIA_INVALIDO, null, null, null);
+        var votoInput = new VotarUseCaseInput(ID_ASSEMBLEIA_INVALIDO, ID_ASSOCIADO, null, null);
 
+        when(this.associadoRepository.findById(ID_ASSOCIADO)).thenReturn(Optional.of(criarAssociado()));
         when(this.assembleiaRepository.findByIdWithPauta(ID_ASSEMBLEIA_INVALIDO)).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(AssembleiaNaoEncontradaException.class)
@@ -114,6 +137,7 @@ class VotarPortAdapterTest {
         var votoInput = criarVotoInput();
         var assembleiaFinalizada = criarAssembleia(FIM_ASSEMBLEIA_PASSADO);
 
+        when(this.associadoRepository.findById(ID_ASSOCIADO)).thenReturn(Optional.of(criarAssociado()));
         when(this.assembleiaRepository.findByIdWithPauta(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaFinalizada));
 
         assertThatExceptionOfType(AssembleiaFinalizadaException.class)
@@ -122,6 +146,7 @@ class VotarPortAdapterTest {
     }
 
     @Test
+    @DisplayName("Ao verificar se um associado já votou, deve lançar AssociadoNaoPodeVotarException")
     void votar_associadoJaVotou_deveLancarAssociadoNaoPodeVotarException() {
 
         var votoInput = criarVotoInput();
@@ -129,6 +154,7 @@ class VotarPortAdapterTest {
         var mensagem = "Não é possível votar mais de uma vez em uma mesma assembleia!\n"
                 + criarListaVotos(ID_ASSOCIADO, VOTO).get(0).toString();
 
+        when(this.associadoRepository.findById(ID_ASSOCIADO)).thenReturn(Optional.of(criarAssociado()));
         when(this.assembleiaRepository.findByIdWithPauta(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaComVotoDoAssociado));
 
         assertThatExceptionOfType(AssociadoNaoPodeVotarException.class)
@@ -194,6 +220,13 @@ class VotarPortAdapterTest {
         voto.setVotoEnum(VOTO);
 
         return voto;
+    }
+
+    private AssociadoTable criarAssociado() {
+        var associado = new AssociadoTable();
+        associado.setId(ID_ASSOCIADO);
+        associado.setCpf(CPF_ASSOCIADO);
+        return associado;
     }
 
 }
