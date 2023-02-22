@@ -5,12 +5,14 @@ import org.back_votos_core.entities.impl.PautaImpl;
 import org.back_votos_core.use_cases.cadastrar_pauta.CadastrarPautaUseCase;
 import org.back_votos_core.use_cases.cadastrar_pauta.input.CadastrarPautaUseCaseInput;
 import org.back_votos_plugins.use_cases.cadastrar_pauta.rest_endpoint.request_model.PautaRequestModel;
+import org.back_votos_plugins.use_cases.cadastrar_pauta.use_case_provider.port_adapter.exceptions.PautaJaCadastradaException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
@@ -47,6 +49,19 @@ class CadastrarPautaUseCaseRestEndpointTest {
             verify(this.cadastrarPautaUseCase).execute(pautaInput);
             assertEquals(ResponseEntity.ok(pautaEsperada), retorno);
         });
+    }
+
+    @Test
+    @DisplayName("Ao tentar cadastrar uma Pauta que já existe, deve retornar CONFLICT")
+    void handleException_pautaJaCadastrada_retornarConflict() {
+
+        var exception = new PautaJaCadastradaException(NOME_PAUTA, ID_PAUTA);
+        var retornoEsperado = new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
+
+        var retorno = this.endpoint.handleException(exception);
+
+        assertEquals(retornoEsperado, retorno);
+
     }
 
     private PautaRequestModel criarPautaRequest() {
