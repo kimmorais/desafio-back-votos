@@ -83,7 +83,7 @@ class VotarPortAdapterTest {
         var votoTableComId = criarVotoTable(ID_VOTO);
         var assembleiaAtualizada = criarAssembleiaAtualizada(assembleiaValida, votoInput);
 
-        when(this.assembleiaRepository.findById(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaValida));
+        when(this.assembleiaRepository.findByIdWithPauta(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaValida));
         when(this.votoTableMapper.converterVotoInputParaVotoTable(votoInput)).thenReturn(votoTable);
         when(this.votoRepository.save(votoTable)).thenReturn(votoTableComId);
         when(this.assembleiaRepository.save(any(AssembleiaTable.class))).thenReturn(assembleiaAtualizada);
@@ -100,7 +100,7 @@ class VotarPortAdapterTest {
 
         var votoInput = new VotarUseCaseInput(ID_ASSEMBLEIA_INVALIDO, null, null, null);
 
-        when(this.assembleiaRepository.findById(ID_ASSEMBLEIA_INVALIDO)).thenReturn(Optional.empty());
+        when(this.assembleiaRepository.findByIdWithPauta(ID_ASSEMBLEIA_INVALIDO)).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(AssembleiaNaoEncontradaException.class)
                 .isThrownBy(() -> this.adapter.votar(votoInput))
@@ -114,7 +114,7 @@ class VotarPortAdapterTest {
         var votoInput = criarVotoInput();
         var assembleiaFinalizada = criarAssembleia(FIM_ASSEMBLEIA_PASSADO);
 
-        when(this.assembleiaRepository.findById(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaFinalizada));
+        when(this.assembleiaRepository.findByIdWithPauta(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaFinalizada));
 
         assertThatExceptionOfType(AssembleiaFinalizadaException.class)
                 .isThrownBy(() -> this.adapter.votar(votoInput))
@@ -129,7 +129,7 @@ class VotarPortAdapterTest {
         var mensagem = "Não é possível votar mais de uma vez em uma mesma assembleia!\n"
                 + criarListaVotos(ID_ASSOCIADO, VOTO).get(0).toString();
 
-        when(this.assembleiaRepository.findById(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaComVotoDoAssociado));
+        when(this.assembleiaRepository.findByIdWithPauta(ID_ASSEMBLEIA)).thenReturn(Optional.of(assembleiaComVotoDoAssociado));
 
         assertThatExceptionOfType(AssociadoNaoPodeVotarException.class)
                 .isThrownBy(() -> this.adapter.votar(votoInput))
