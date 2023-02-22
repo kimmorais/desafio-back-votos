@@ -26,8 +26,8 @@ class CadastrarAssociadoUseCaseImplTest {
     CadastrarAssociadoUseCaseImpl impl;
 
     @Test
-    @DisplayName("Ao chamar o método, deve retornar uma nova instância de CadastrarAssociadoUseCaseImpl")
-    void execute_chamadaValida_retornarInstanciaCadastrarAssociadoUseCaseImpl() {
+    @DisplayName("Ao chamar o método, deve retornar Associado")
+    void execute_chamadaValida_retornarAssociado() {
 
         var associadoInput = criarAssociadoInput();
         var associadoEsperado = criarAssociadoEsperado();

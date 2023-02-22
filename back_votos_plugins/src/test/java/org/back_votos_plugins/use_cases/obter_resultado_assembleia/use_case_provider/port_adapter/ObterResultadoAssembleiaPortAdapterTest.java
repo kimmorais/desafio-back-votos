@@ -8,6 +8,7 @@ import org.back_votos_core.entities.impl.AssembleiaImpl;
 import org.back_votos_core.entities.impl.PautaImpl;
 import org.back_votos_core.entities.impl.VotoImpl;
 import org.back_votos_core.use_cases.obter_resultado_assembleia.input.ObterResultadoAssembleiaUseCaseInput;
+import org.back_votos_plugins.common.exceptions.AssembleiaNaoEncontradaException;
 import org.back_votos_plugins.dao.repositories.AssembleiaRepository;
 import org.back_votos_plugins.dao.tables.AssembleiaTable;
 import org.back_votos_plugins.dao.tables.PautaTable;
@@ -47,6 +48,7 @@ class ObterResultadoAssembleiaPortAdapterTest {
     static final LocalDateTime MOMENTO_REQUEST = LocalDateTime.of(2023, 2, 19, 15, 10, 0, 0);
     static final LocalDateTime FIM_ASSEMBLEIA = LocalDateTime.of(2023, 2, 19, 15, 0, 0, 0);
     static final LocalDateTime FIM_ASSEMBLEIA_EM_ANDAMENTO = LocalDateTime.of(2023, 2, 19, 15, 30, 0, 0);
+    static final String MENSAGEM_ASSEMBLEIA_NAO_ENCONTRADA = "Não foi possível encontrar uma assembleia com ID " + ID_ASSEMBLEIA;
     static final String MENSAGEM_ASSEMBLEIA_EM_ANDAMENTO = "Esta assembleia ainda está em andamento. Tente novamente " +
             "após " + FIM_ASSEMBLEIA_EM_ANDAMENTO + " para saber o resultado. \nMomento da solicitação: " + MOMENTO_REQUEST;
 
@@ -75,6 +77,19 @@ class ObterResultadoAssembleiaPortAdapterTest {
         var retorno = this.adapter.obterResultado(assembleiaInput);
 
         assertEquals(assembleiaEsperada, retorno);
+    }
+
+    @Test
+    @DisplayName("Ao tentar obter o resultado de uma Assembleia que não existe, deve lançar AssembleiaNaoEncontradaException")
+    void obterResultado_assembleiaNaoExiste_lancarAssembleiaNaoEncontradaException() {
+
+        var assembleiaInput = criarAssembleiaInput();
+
+        when(this.assembleiaRepository.findById(ID_ASSEMBLEIA)).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(AssembleiaNaoEncontradaException.class)
+                .isThrownBy(() -> this.adapter.obterResultado(assembleiaInput))
+                .withMessage(MENSAGEM_ASSEMBLEIA_NAO_ENCONTRADA);
     }
 
     @Test

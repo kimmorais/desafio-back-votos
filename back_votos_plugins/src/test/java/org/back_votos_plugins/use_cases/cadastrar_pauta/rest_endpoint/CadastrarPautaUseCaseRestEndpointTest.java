@@ -61,7 +61,6 @@ class CadastrarPautaUseCaseRestEndpointTest {
         var retorno = this.endpoint.handleException(exception);
 
         assertEquals(retornoEsperado, retorno);
-
     }
 
     private PautaRequestModel criarPautaRequest() {

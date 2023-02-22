@@ -10,6 +10,7 @@ import org.back_votos_plugins.dao.repositories.PautaRepository;
 import org.back_votos_plugins.dao.tables.AssembleiaTable;
 import org.back_votos_plugins.dao.tables.PautaTable;
 import org.back_votos_plugins.dao.tables.mappers.AssembleiaTableMapper;
+import org.back_votos_plugins.use_cases.iniciar_assembleia.use_case_provider.port_adapter.exceptions.PautaNaoExistenteException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -33,7 +35,7 @@ class IniciarAssembleiaPortAdapterTest {
     static final UUID ID_PAUTA = UUID.fromString("846af96e-e305-4c8a-b372-55ae5b3c579b");
     static final String NOME_PAUTA = "TESTE";
     static final LocalDateTime FIM_ASSEMBLEIA = LocalDateTime.of(2023, 2, 19, 20, 0, 0, 0);
-
+    static final String MENSAGEM_PAUTA_NAO_ENCONTRADA = "Não foi possível encontrar uma pauta com o nome " + NOME_PAUTA;
     @Mock
     PautaRepository pautaRepository;
 
@@ -48,7 +50,7 @@ class IniciarAssembleiaPortAdapterTest {
 
     @Test
     @DisplayName("Deve iniciar uma nova assembleia e retorna-la")
-    void iniciarAssembleia_dadosValidos_deveIniciarAssembleia() {
+    void iniciarAssembleia_dadosValidos_iniciarAssembleia() {
 
         var assembleiaEsperada = criarAssembleiaEsperada();
         var assembleiaInput = criarAssembleiaInput();
@@ -62,6 +64,19 @@ class IniciarAssembleiaPortAdapterTest {
         var retorno = this.adapter.iniciarAssembleia(assembleiaInput);
 
         assertEquals(assembleiaEsperada, retorno);
+    }
+
+    @Test
+    @DisplayName("Ao tentar iniciar uma Assembleia para uma Pauta que não existe, deve lançar PautaNaoExistenteException")
+    void iniciarAssembleia_pautaInvalida_lancarPautaNaoExistenteException() {
+
+        var assembleiaInput = criarAssembleiaInput();
+
+        when(this.pautaRepository.findByNome(NOME_PAUTA)).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(PautaNaoExistenteException.class)
+                .isThrownBy(() -> this.adapter.iniciarAssembleia(assembleiaInput))
+                .withMessage(MENSAGEM_PAUTA_NAO_ENCONTRADA);
     }
 
     private AssembleiaTable criarAssembleiaTable() {

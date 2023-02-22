@@ -6,10 +6,6 @@ import org.back_votos_core.entities.constants.VotoEnum;
 import java.util.UUID;
 
 public class VotoImpl extends Voto {
-    @Override
-    public UUID getIdVoto() {
-        return this.idVoto;
-    }
 
     @Override
     public void setIdVoto(UUID idVoto) {
@@ -24,11 +20,6 @@ public class VotoImpl extends Voto {
     @Override
     public void setIdAssociado(UUID idAssociado) {
         this.idAssociado = idAssociado;
-    }
-
-    @Override
-    public VotoEnum getVotoEnum() {
-        return this.votoEnum;
     }
 
     @Override

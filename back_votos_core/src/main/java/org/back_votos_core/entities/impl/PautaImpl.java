@@ -11,11 +11,6 @@ public class PautaImpl extends Pauta {
     }
 
     @Override
-    public UUID getIdPauta() {
-        return this.idPauta;
-    }
-
-    @Override
     public void setNome(String nome) {
         this.nome = nome;
     }

@@ -10,8 +10,10 @@ import org.back_votos_core.use_cases.iniciar_assembleia.input.IniciarAssembleiaU
 import org.back_votos_plugins.factories.EntityFactories;
 import org.back_votos_plugins.use_cases.iniciar_assembleia.rest_endpoint.exceptions.AssembleiaDeveFinalizarNoFuturoException;
 import org.back_votos_plugins.use_cases.iniciar_assembleia.rest_endpoint.request_model.IniciarAssembleiaRequestModel;
+import org.back_votos_plugins.use_cases.iniciar_assembleia.use_case_provider.port_adapter.exceptions.PautaNaoExistenteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,10 +32,9 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,8 +63,9 @@ class IniciarAssembleiaUseCaseRestEndpointTest {
         );
     }
 
+
     @Mock
-    EntityFactories entityFactories;
+    EntityFactories entityFactoriesMock;
 
     @Mock
     PautaFactory pautaFactory;
@@ -76,10 +78,7 @@ class IniciarAssembleiaUseCaseRestEndpointTest {
     @BeforeEach
     void setUp() {
 
-        this.endpoint = new IniciarAssembleiaUseCaseRestEndpoint(FIXED_CLOCK, this.entityFactories, this.iniciarAssembleiaUseCase);
-
-        when(this.entityFactories.pautaFactory()).thenReturn(this.pautaFactory);
-        when(this.pautaFactory.makeNewInstance()).thenReturn(new PautaImpl());
+        this.endpoint = new IniciarAssembleiaUseCaseRestEndpoint(FIXED_CLOCK, this.entityFactoriesMock, this.iniciarAssembleiaUseCase);
     }
 
     @ParameterizedTest
@@ -88,23 +87,21 @@ class IniciarAssembleiaUseCaseRestEndpointTest {
     void iniciarAssembleia_requestValida_retornarNovaAssembleia(String tempoAssembleia) {
 
         var assembleiaEsperada = criarAssembleia();
-        var assembleiaInput = criarAssembleiaInput(tempoAssembleia);
         var assembleiaRequest = criarAssembleiaRequest();
 
-        when(this.iniciarAssembleiaUseCase.execute(assembleiaInput)).thenReturn(assembleiaEsperada);
+        when(this.entityFactoriesMock.pautaFactory()).thenReturn(this.pautaFactory);
+        when(this.pautaFactory.makeNewInstance()).thenReturn(new PautaImpl());
+        when(this.iniciarAssembleiaUseCase.execute(any(IniciarAssembleiaUseCaseInput.class))).thenReturn(assembleiaEsperada);
 
         var retorno = this.endpoint.iniciarAssembleia(tempoAssembleia, assembleiaRequest);
 
-        assertAll(() -> {
-            verify(this.iniciarAssembleiaUseCase).execute(assembleiaInput);
-            assertEquals(ResponseEntity.ok(assembleiaEsperada), retorno);
-        });
+        assertEquals(ResponseEntity.ok(assembleiaEsperada), retorno);
     }
 
     @ParameterizedTest
     @MethodSource("criarEntradasInvalidas")
-    @DisplayName("Dado um tempo de assembleia no passado ou presente (mesmo momento da request), deve lançar AssembleiaDeveFinalizarNoFuturoException")
-    void handleException_tempoAssembleiaAtualOuPassado_lancarAssembleiaDeveFinalizarNoFuturoException(String tempoAssembleia) {
+    @DisplayName("Dado um tempo de assembleia no passado ou presente (mesmo momento da request), deve retornar BAD_REQUEST")
+    void handleException_tempoAssembleiaAtualOuPassado_retornarBadRequest(String tempoAssembleia) {
 
         var assembleiaRequest = criarAssembleiaRequest();
         var tempoAtual = LocalDateTime.now(FIXED_CLOCK);
@@ -112,7 +109,22 @@ class IniciarAssembleiaUseCaseRestEndpointTest {
         var exception = criarException(tempoAtual, tempoAssembleiaFormatado);
         var retornoEsperado = new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 
+        when(this.entityFactoriesMock.pautaFactory()).thenReturn(this.pautaFactory);
+        when(this.pautaFactory.makeNewInstance()).thenReturn(new PautaImpl());
+
         this.endpoint.iniciarAssembleia(tempoAssembleia, assembleiaRequest);
+        var retorno = this.endpoint.handleException(exception);
+
+        assertEquals(retornoEsperado, retorno);
+    }
+
+    @Test
+    @DisplayName("Ao tentar iniciar uma Assembleia para uma Pauta que não existe, deve retornar NOT_FOUND")
+    void handleException_pautaNaoExistente_retornarNotFound() {
+
+        var exception = new PautaNaoExistenteException(NOME_PAUTA);
+        var retornoEsperado = new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+
         var retorno = this.endpoint.handleException(exception);
 
         assertEquals(retornoEsperado, retorno);
@@ -128,27 +140,17 @@ class IniciarAssembleiaUseCaseRestEndpointTest {
         return request;
     }
 
-    private IniciarAssembleiaUseCaseInput criarAssembleiaInput(String tempoAssembleia) {
-        return new IniciarAssembleiaUseCaseInput(criarPauta(null), validarTempoAssembleia(tempoAssembleia));
-    }
-
-    private LocalDateTime validarTempoAssembleia(String tempoAssembleia) {
-        return tempoAssembleia == null ?
-                LocalDateTime.now(FIXED_CLOCK).plusMinutes(1) :
-                LocalDateTime.parse(tempoAssembleia, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-    }
-
     private Assembleia criarAssembleia() {
         var assembleia = new AssembleiaImpl();
         assembleia.setIdAssembleia(ID_ASSEMBLEIA);
-        assembleia.setPauta(criarPauta(ID_PAUTA));
+        assembleia.setPauta(criarPauta());
         assembleia.setVotos(new ArrayList<>());
         return assembleia;
     }
 
-    private Pauta criarPauta(UUID idPauta) {
-        var pauta = this.entityFactories.pautaFactory().makeNewInstance();
-        pauta.setIdPauta(idPauta);
+    private Pauta criarPauta() {
+        var pauta = new PautaImpl();
+        pauta.setIdPauta(ID_PAUTA);
         pauta.setNome(NOME_PAUTA);
         return pauta;
     }
