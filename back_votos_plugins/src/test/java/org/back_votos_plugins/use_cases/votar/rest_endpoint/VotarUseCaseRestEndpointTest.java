@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 class VotarUseCaseRestEndpointTest {
 
     static final LocalDateTime DATA_VOTO = LocalDateTime.of(2023, 2, 19, 15, 0, 0, 0);
-    static final Clock FIXED_CLOCK = Clock.fixed(DATA_VOTO.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+    static final Clock FIXED_CLOCK = Clock.fixed(DATA_VOTO.toInstant(ZoneOffset.UTC), ZoneId.of("UTC-03:00"));
 
     static final UUID ID_VOTO = UUID.fromString("0c1d4965-6b32-4c85-8eb3-ca09a196e1c2");
     static final UUID ID_ASSOCIADO = UUID.fromString("b6d14737-a387-48dc-90ca-fc5508ea2405");

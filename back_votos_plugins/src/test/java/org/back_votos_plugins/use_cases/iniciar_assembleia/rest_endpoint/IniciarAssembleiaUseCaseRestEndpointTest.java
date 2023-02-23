@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
 class IniciarAssembleiaUseCaseRestEndpointTest {
 
     static final LocalDateTime MOMENTO_REQUEST = LocalDateTime.of(2023, 2, 19, 15, 0, 0, 0);
-    static final Clock FIXED_CLOCK = Clock.fixed(MOMENTO_REQUEST.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+    static final Clock FIXED_CLOCK = Clock.fixed(MOMENTO_REQUEST.toInstant(ZoneOffset.UTC), ZoneId.of("UTC-03:00"));
     static final String MOMENTO_FUTURO_STRING = "2023-02-19T19:00:00.00";
     static final String MOMENTO_PASSADO_STRING = "2023-02-19T14:59:00.00";
     static final String MESMO_MOMENTO_STRING = "2023-02-19T15:00:00.00";
