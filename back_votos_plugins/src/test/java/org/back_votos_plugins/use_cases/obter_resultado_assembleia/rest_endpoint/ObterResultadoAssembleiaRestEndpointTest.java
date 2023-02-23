@@ -36,7 +36,7 @@ class ObterResultadoAssembleiaRestEndpointTest {
 
     static final LocalDateTime MOMENTO_REQUEST = LocalDateTime.of(2023, 2, 19, 15, 0, 0, 0);
     static final LocalDateTime FIM_ASSEMBLEIA = LocalDateTime.of(2023, 2, 19, 20, 0, 0, 0);
-    static final Clock FIXED_CLOCK = Clock.fixed(MOMENTO_REQUEST.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+    static final Clock FIXED_CLOCK = Clock.fixed(MOMENTO_REQUEST.toInstant(ZoneOffset.UTC), ZoneId.of("UTC-03:00"));
     static final UUID ID_ASSEMBLEIA = UUID.fromString("16d14880-90f6-4a6f-b20c-2dacfee8e11d");
     static final UUID ID_PAUTA = UUID.fromString("f3213a7f-95f1-473d-8ffc-7651154d5f41");
     static final UUID ID_VOTO = UUID.fromString("261903ea-d50a-4225-8a30-a0da4ab1f1c9");

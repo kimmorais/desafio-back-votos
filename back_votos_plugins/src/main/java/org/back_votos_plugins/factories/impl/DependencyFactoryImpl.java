@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
+import java.time.ZoneId;
 
 @Configuration
 public class DependencyFactoryImpl implements DependencyFactory {
@@ -13,6 +14,6 @@ public class DependencyFactoryImpl implements DependencyFactory {
     @Override
     public Clock criarClock() {
 
-        return Clock.systemDefaultZone();
+        return Clock.system(ZoneId.of("UTC-03:00"));
     }
 }
