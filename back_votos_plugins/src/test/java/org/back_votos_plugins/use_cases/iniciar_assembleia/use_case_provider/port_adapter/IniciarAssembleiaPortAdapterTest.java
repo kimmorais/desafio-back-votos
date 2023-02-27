@@ -88,7 +88,7 @@ class IniciarAssembleiaPortAdapterTest {
     }
 
     private IniciarAssembleiaUseCaseInput criarAssembleiaInput() {
-        return new IniciarAssembleiaUseCaseInput(criarPauta(null), FIM_ASSEMBLEIA);
+        return new IniciarAssembleiaUseCaseInput(criarPauta(null), null, FIM_ASSEMBLEIA);
     }
 
     private Assembleia criarAssembleiaEsperada() {
