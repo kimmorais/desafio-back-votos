@@ -4,5 +4,5 @@ import org.back_votos_core.entities.Pauta;
 
 import java.time.LocalDateTime;
 
-public record IniciarAssembleiaUseCaseInput(Pauta pauta, LocalDateTime fimAssembleia) {
+public record IniciarAssembleiaUseCaseInput(Pauta pauta, LocalDateTime momentoRequest, LocalDateTime fimAssembleia) {
 }

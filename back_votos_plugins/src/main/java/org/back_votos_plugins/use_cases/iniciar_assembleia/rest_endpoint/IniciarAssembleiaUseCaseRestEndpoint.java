@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.back_votos_core.entities.Assembleia;
 import org.back_votos_core.entities.Pauta;
 import org.back_votos_core.use_cases.iniciar_assembleia.IniciarAssembleiaUseCase;
+import org.back_votos_core.use_cases.iniciar_assembleia.impl.exceptions.AssembleiaDeveFinalizarNoFuturoException;
 import org.back_votos_core.use_cases.iniciar_assembleia.input.IniciarAssembleiaUseCaseInput;
 import org.back_votos_plugins.factories.EntityFactories;
-import org.back_votos_plugins.use_cases.iniciar_assembleia.rest_endpoint.exceptions.AssembleiaDeveFinalizarNoFuturoException;
 import org.back_votos_plugins.use_cases.iniciar_assembleia.rest_endpoint.request_model.IniciarAssembleiaRequestModel;
 import org.back_votos_plugins.use_cases.iniciar_assembleia.use_case_provider.port_adapter.exceptions.PautaNaoExistenteException;
 import org.springframework.http.HttpStatus;
@@ -48,7 +48,8 @@ public class IniciarAssembleiaUseCaseRestEndpoint {
     }
 
     private IniciarAssembleiaUseCaseInput criarAssembleiaInput(String tempoAssembleia, String pauta) {
-        return new IniciarAssembleiaUseCaseInput(criarPauta(pauta), validarTempoAssembleia(tempoAssembleia));
+        var momentoRequest = LocalDateTime.now(this.clock);
+        return new IniciarAssembleiaUseCaseInput(criarPauta(pauta), momentoRequest, validarTempoAssembleia(momentoRequest, tempoAssembleia));
     }
 
     private Pauta criarPauta(String nomePauta) {
@@ -57,20 +58,9 @@ public class IniciarAssembleiaUseCaseRestEndpoint {
         return pauta;
     }
 
-    private LocalDateTime validarTempoAssembleia(String tempoAssembleia) {
+    private LocalDateTime validarTempoAssembleia(LocalDateTime momentoRequest, String tempoAssembleia) {
         return tempoAssembleia == null ?
-                LocalDateTime.now(this.clock).plusMinutes(1) :
-                validarTempoAssembleiaPassado(tempoAssembleia);
-    }
-
-    private LocalDateTime validarTempoAssembleiaPassado(String tempoAssembleia) {
-
-        var tempoAtual = LocalDateTime.now(this.clock);
-        var tempoAssembleiaFormatado = LocalDateTime.parse(tempoAssembleia, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        if (tempoAssembleiaFormatado.isBefore(tempoAtual) || tempoAssembleiaFormatado.isEqual(tempoAtual)) {
-            throw new AssembleiaDeveFinalizarNoFuturoException(tempoAtual, tempoAssembleiaFormatado);
-        }
-
-        return tempoAssembleiaFormatado;
+                momentoRequest.plusMinutes(1) :
+                LocalDateTime.parse(tempoAssembleia, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }
