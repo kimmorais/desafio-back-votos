@@ -3,7 +3,9 @@
 
 Esta é uma API Rest de um sistema de votação em assembleias sobre determinadas pautas.<br/>
 A documentação dos endpoints da API pode ser encontrada neste [link](http://desafiobackvotos-env.eba-tsvwepdi.us-east-1.elasticbeanstalk.com/swagger-ui/index.html#/>).<br/>
-Esta API foi desenvolvida utilizando Java 17 e o framework Spring Boot. Os testes unitários foram feitos utilizando JUnit 5 e Mockito.
+Esta API foi desenvolvida utilizando Java 17 e o framework Spring Boot.<br/>
+Os testes unitários foram feitos utilizando JUnit 5 e Mockito.<br/>
+A API está hosteada na AWS utilizando o AWS Elastic Beanstalk e o AWS RDS para o banco de dados PostgreSQL.
 
 ### Funcionamento
 
