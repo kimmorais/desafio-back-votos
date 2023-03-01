@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/backvotos
+    url: jdbc:postgresql://database-1-backvotos.cgfbqvadtdmx.us-east-1.rds.amazonaws.com:5432/banco_desafio_back_votos
     driverClassName: org.postgresql.Driver
-    username: associado123
-    password: associado123
+    username: postgresroot123
+    password: EGGI6YbbUNN7LiHWxHPr
     testWhileIdle: true
     validationQuery: SELECT 1
   jpa:
@@ -19,3 +19,10 @@ springdoc:
     path: /v3/back-votos-docs
   swagger-ui:
     operationsSorter: method
+
+aws:
+  credentials:
+    access-key: AKIAZUQB7BEBG27VRJ4M
+    secret-key: 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
+  queue:
+    name: fila-assembleias-finalizadas.fifo
