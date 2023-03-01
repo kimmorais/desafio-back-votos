@@ -9,7 +9,6 @@ import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.back_votos_plugins.use_cases.obter_resultado_assembleia.scheduling.credenciais.CredenciaisAws;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -17,7 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.HashMap;
 
-@Slf4j
 @Configuration
 @EnableScheduling
 @RequiredArgsConstructor
@@ -34,7 +32,6 @@ public class ObterResultadoAssembleiaSubscriber {
                 .withWaitTimeSeconds(10)
                 .withMaxNumberOfMessages(10);
         var mensagens = sqs.receiveMessage(receiveMessageRequest).getMessages();
-        mensagens.forEach(mensagem -> log.info("Mensagem recebida. Mensagem: " + mensagem.getBody()));
     }
 
     private String criarFila(AmazonSQS sqs) {
