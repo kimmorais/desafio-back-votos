@@ -1,4 +1,4 @@
-package org.back_votos_plugins.use_cases.obter_resultado_assembleia.scheduling.producer;
+package org.back_votos_plugins.use_cases.obter_resultado_assembleia.scheduling.publisher;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -27,7 +27,7 @@ import java.util.UUID;
 @Configuration
 @EnableScheduling
 @RequiredArgsConstructor
-public class ObterResultadoAssembleiaProducer {
+public class ObterResultadoAssembleiaPublisher {
 
     private static final String MENSAGEM_ASSEMBLEIA_FINALIZADA = "Assembleia ID %s e Pauta %s finalizada. Resultado: %s";
 

@@ -1,4 +1,4 @@
-package org.back_votos_plugins.use_cases.obter_resultado_assembleia.scheduling.consumer;
+package org.back_votos_plugins.use_cases.obter_resultado_assembleia.scheduling.subscriber;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 @Configuration
 @EnableScheduling
 @RequiredArgsConstructor
-public class ObterResultadoAssembleiaConsumer {
+public class ObterResultadoAssembleiaSubscriber {
 
     private final CredenciaisAws credenciaisAws;
 
