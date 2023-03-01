@@ -31,8 +31,8 @@ Você pode:
 Para executar localmente:
 1. Verifique se está com o ambiente configurado para o Maven e Java 17;
 2. Clone o repositório na sua máquina;
-3. No diretório raiz do projeto, execute o comando mvn clean, mvn install;
-4. Navegue até a pasta _/target/_ e execute o comando **java -jar back_votos_plugins-1.0-SNAPSHOT.jar**.
+3. Navegue até o diretório **back_votos_core** e execute o comando mvn clean, mvn install. Faça o mesmo no diretório **back_votos_plugins**;
+4. No diretório **back_votos_plugins** avegue até a pasta _/target/_ e execute o comando **java -jar back_votos_plugins-1.0-SNAPSHOT.jar**.
 
 Após realizar estes passos, a aplicação estará rodando e será possível testá-la localmente utilizando sua plataforma de envio de requisição para API desejada.
 
