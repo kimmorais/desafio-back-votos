@@ -7,6 +7,8 @@ Esta API foi desenvolvida utilizando Java 17 e o framework Spring Boot.<br/>
 Os testes unitários foram feitos utilizando JUnit 5 e Mockito.<br/>
 A API está hosteada na AWS utilizando o AWS Elastic Beanstalk, AWS RDS para o banco de dados PostgreSQL e o AWS SQS para o serviço de mensageria.
 
+#### **A "tarefa bônus 1 - integração com sistemas externos" não foi implementada pois o sistema hosteado no Heroku estava/está fora do ar até o momento da entrega do desafio**
+
 ### Comandos
 
 Você pode:
